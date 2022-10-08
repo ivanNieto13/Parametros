@@ -4,11 +4,25 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var analytics: FirebaseAnalytics
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        analytics = Firebase.analytics
+
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT) {
+            param(FirebaseAnalytics.Param.ITEM_ID, "id");
+            param(FirebaseAnalytics.Param.ITEM_NAME, "pantalla principal");
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "Pantalla");
+        }
     }
 
     fun click(view: View) {
@@ -19,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         val alumno3 = Alumno3("ivan 3", "3333333")
 
         val intent = Intent(this, MainActivity2::class.java)
+
+        analytics.logEvent("clic-boton"){
+            param("accion", "clic")
+            param("texto-boton", "Ir a 2")
+        }
 
         /*parametros.putString("usuario", "Ivan")
         parametros.putInt("sesion", 12345)*/
